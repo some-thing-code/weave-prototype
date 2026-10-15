@@ -1,3 +1,7 @@
 {
-  "cleanUrls": true
+  "routes": [
+    { "src": "/volunteer-dashboard", "dest": "/volunteer-dashboard.html" },
+    { "src": "/org-dashboard", "dest": "/org-dashboard.html" },
+    { "src": "/", "dest": "/volunteer-dashboard.html" }
+  ]
 }
