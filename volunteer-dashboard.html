@@ -130,7 +130,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--surface);color:
             style="transition:stroke-dashoffset 1.6s cubic-bezier(.25,.46,.45,.94)"/>
           <text x="100" y="91" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="38" font-weight="500" fill="#1A1A18">247</text>
           <text x="100" y="112" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="13" fill="#6B7166">hours logged</text>
-          <text x="100" y="130" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" font-weight="500" fill="#40916C">98% to next badge</text>
+          <text x="100" y="130" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" font-weight="500" fill="#40916C">90% to next badge</text>
         </svg>
       </div>
       <div class="ring-divider"></div>
@@ -140,7 +140,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--surface);color:
           <div class="ring-badge-icon"><i class="ti ti-trophy" style="color:var(--amber);font-size:16px"></i></div>
           <div class="ring-badge-name">Double Century</div>
         </div>
-        <p class="ring-desc">Just 3 more hours — join the top 8% of volunteers on Weave.</p>
+        <p class="ring-desc">Just 25 more hours — join the top 8% of volunteers on Weave.</p>
         <div class="prog-track"><div class="prog-fill" id="prog"></div></div>
         <div class="prog-labels"><span>247 hrs</span><span style="color:var(--g500);font-weight:600">250 hrs</span></div>
         <div class="monthly">
@@ -232,9 +232,9 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--surface);color:
 window.addEventListener('load',()=>{
   setTimeout(()=>{
     const r=document.getElementById('ring');
-    if(r) r.style.strokeDashoffset='6';
+    if(r) r.style.strokeDashoffset='49';
     const p=document.getElementById('prog');
-    if(p) p.style.width='98.8%';
+    if(p) p.style.width='90%';
   },200);
 });
 </script>
