@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weave — Volunteer Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --g900:#1B4332;--g700:#2D6A4F;--g500:#40916C;--g300:#74C69D;--g100:#D8F3DC;--g50:#F0FBF3;
+  --ink:#1A1A18;--ink2:#4A4A46;--ink3:#6B7166;--ink4:#8A8A84;
+  --surface:#F5F6F3;--card:#FFFFFF;--border:#E6E8E3;
+  --amber:#D97706;--amber-bg:#FFF3CD;--amber-border:#F9D98A;--amber-text:#78350F;
+  --coral:#C2410C;--coral-bg:#FFEDE5;
+  --purple:#534AB7;--purple-bg:#EEEDFE;
+  --teal:#0F6E56;--teal-bg:#E1F5EE;
+  --pink:#9D174D;--pink-bg:#FBE8EC;
+}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--surface);color:var(--ink);-webkit-font-smoothing:antialiased;min-height:100vh}
+.nav{background:var(--card);border-bottom:1px solid var(--border);padding:0 28px;display:flex;align-items:center;height:56px;gap:20px;position:sticky;top:0;z-index:50}
+.logo{font-size:16px;font-weight:600;color:var(--g700);letter-spacing:-.5px;display:flex;align-items:center;gap:7px;text-decoration:none;flex-shrink:0}
+.logo-dot{width:10px;height:10px;border-radius:50%;background:var(--g500)}
+.nav-links{display:flex;gap:2px;flex:1}
+.nav-link{font-size:14px;padding:6px 12px;border-radius:8px;color:var(--ink3);text-decoration:none}
+.nav-link.active{color:var(--g700);font-weight:500;background:var(--g100)}
+.nav-bell{width:36px;height:36px;border-radius:50%;background:var(--surface);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink3);font-size:18px;position:relative}
+.nav-bell::after{content:'';position:absolute;top:8px;right:9px;width:7px;height:7px;background:#E54D2E;border-radius:50%;border:2px solid var(--card)}
+.avatar{width:34px;height:34px;border-radius:50%;background:var(--g500);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#fff}
+.page{max-width:1100px;margin:0 auto;padding:28px 32px 48px}
+.greeting{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:22px}
+.greeting-name{font-size:26px;font-weight:500;color:var(--ink);letter-spacing:-.5px}
+.greeting-sub{font-size:14px;color:var(--ink3);margin-top:5px}
+.streak{display:flex;align-items:center;gap:6px;background:var(--amber-bg);border-radius:20px;padding:7px 14px;border:1px solid var(--amber-border);flex-shrink:0}
+.streak span{font-size:13px;font-weight:500;color:var(--amber-text)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px}
+.stat{background:var(--card);border-radius:10px;padding:16px 18px;border:1px solid var(--border)}
+.stat-val{font-size:28px;font-weight:500;color:var(--ink);line-height:1}
+.stat-label{font-size:13px;color:var(--ink3);margin-top:5px}
+.main{display:grid;grid-template-columns:1fr 310px;gap:18px;margin-bottom:22px}
+.ring-panel{background:var(--card);border-radius:16px;padding:28px;border:1px solid var(--border);display:flex;align-items:center;gap:32px}
+.ring-divider{width:1px;background:var(--border);align-self:stretch;margin:0 4px}
+.ring-info{flex:1}
+.ring-section-label{font-size:11px;font-weight:600;color:var(--ink4);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px}
+.ring-badge-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.ring-badge-icon{width:30px;height:30px;border-radius:8px;background:var(--amber-bg);display:flex;align-items:center;justify-content:center;border:1px solid var(--amber-border)}
+.ring-badge-name{font-size:18px;font-weight:500;color:var(--ink)}
+.ring-desc{font-size:13px;color:var(--ink3);margin-bottom:16px;line-height:1.5}
+.prog-track{background:var(--g50);border-radius:6px;height:8px;overflow:hidden;margin-bottom:6px;border:1px solid var(--g100)}
+.prog-fill{height:100%;background:var(--g500);border-radius:6px;width:0;transition:width 1.4s cubic-bezier(.25,.46,.45,.94)}
+.prog-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--ink3)}
+.monthly{margin-top:20px;border-top:1px solid var(--border);padding-top:16px}
+.month-row{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.month-label{font-size:12px;color:var(--ink3);width:76px;flex-shrink:0}
+.month-bar{flex:1;height:6px;background:var(--g50);border-radius:4px;overflow:hidden}
+.month-fill{height:100%;border-radius:4px}
+.month-val{font-size:12px;font-weight:500;color:var(--ink);width:36px;text-align:right}
+.upcoming{display:flex;flex-direction:column;gap:10px}
+.col-label{font-size:11px;font-weight:600;color:var(--ink4);text-transform:uppercase;letter-spacing:.06em}
+.event-card{background:var(--card);border-radius:12px;padding:14px 16px;border:1px solid var(--border)}
+.event-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:10px}
+.event-name{font-size:14px;font-weight:500;color:var(--ink);line-height:1.3}
+.event-org{font-size:12px;color:var(--ink3);margin-top:2px}
+.hrs-pill{background:var(--g100);color:var(--g900);font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;flex-shrink:0;border:1px solid #B7E4C7}
+.event-meta{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--ink3);margin-bottom:4px}
+.nudge-card{background:var(--card);border-radius:12px;padding:14px 16px;border:1px dashed #B7E4C7;text-align:center}
+.nudge-card p{font-size:13px;color:var(--ink3);margin-bottom:3px}
+.nudge-card a{font-size:12px;color:var(--g500);font-weight:600;text-decoration:none}
+.find-btn{background:transparent;border:1px solid var(--g500);border-radius:10px;padding:11px;font-size:13px;font-weight:500;color:var(--g700);cursor:pointer;width:100%;font-family:'DM Sans',sans-serif}
+.badges-section{background:var(--card);border-radius:16px;padding:22px 24px;border:1px solid var(--border);margin-bottom:18px}
+.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.section-title{font-size:15px;font-weight:500;color:var(--ink)}
+.section-meta{font-size:13px;color:var(--ink3)}
+.badges-row{display:flex;gap:14px;flex-wrap:wrap}
+.badge-tile{display:flex;flex-direction:column;align-items:center;gap:6px;width:68px}
+.badge-icon{width:54px;height:54px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;border:1px solid transparent;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.badge-icon.locked{opacity:.3;border:1.5px dashed #C5C9C2;background:var(--surface)!important;box-shadow:none}
+.badge-label{font-size:11px;color:var(--ink3);text-align:center;line-height:1.3}
+.bottom{display:grid;grid-template-columns:1fr 320px;gap:18px}
+.activity-section{background:var(--card);border-radius:16px;padding:22px 24px;border:1px solid var(--border)}
+.activity-item{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.activity-item:last-child{border-bottom:none;padding-bottom:0}
+.act-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0}
+.act-text{font-size:14px;color:var(--ink);line-height:1.5}
+.act-time{font-size:12px;color:var(--ink3);margin-top:3px}
+.causes-section{background:var(--card);border-radius:16px;padding:22px 24px;border:1px solid var(--border)}
+.cause-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 13px;border-radius:20px;font-size:13px;font-weight:500;border:1px solid;cursor:pointer;margin:0 6px 8px 0}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="/" class="logo"><span class="logo-dot"></span>weave</a>
+  <div class="nav-links">
+    <a href="discover.html" class="nav-link">Discover</a>
+    <a href="index.html" class="nav-link active">Dashboard</a>
+    <a href="#" class="nav-link">Feed</a>
+    <a href="#" class="nav-link">My profile</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px">
+    <div class="nav-bell"><i class="ti ti-bell"></i></div>
+    <div class="avatar">MC</div>
+  </div>
+</nav>
+<div class="page">
+  <div class="greeting">
+    <div>
+      <div class="greeting-name">Good morning, Maria.</div>
+      <div class="greeting-sub">You're 3 hours from your next badge — so close.</div>
+    </div>
+    <div class="streak"><i class="ti ti-flame" style="font-size:15px;color:var(--amber)"></i><span>6-week streak</span></div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-val">247</div><div class="stat-label">Hours total</div></div>
+    <div class="stat"><div class="stat-val">34</div><div class="stat-label">Events attended</div></div>
+    <div class="stat"><div class="stat-val">8</div><div class="stat-label">Causes supported</div></div>
+    <div class="stat"><div class="stat-val">12</div><div class="stat-label">Badges earned</div></div>
+  </div>
+  <div class="main">
+    <div class="ring-panel">
+      <div style="flex-shrink:0">
+        <svg width="200" height="200" viewBox="0 0 200 200">
+          <circle cx="100" cy="100" r="78" fill="none" stroke="#B7E4C7" stroke-width="13"/>
+          <circle id="ring" cx="100" cy="100" r="78" fill="none" stroke="#40916C"
+            stroke-width="13" stroke-linecap="round"
+            stroke-dasharray="490" stroke-dashoffset="490"
+            transform="rotate(-90 100 100)"
+            style="transition:stroke-dashoffset 1.6s cubic-bezier(.25,.46,.45,.94)"/>
+          <text x="100" y="91" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="38" font-weight="500" fill="#1A1A18">247</text>
+          <text x="100" y="112" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="13" fill="#6B7166">hours logged</text>
+          <text x="100" y="130" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" font-weight="500" fill="#40916C">98% to next badge</text>
+        </svg>
+      </div>
+      <div class="ring-divider"></div>
+      <div class="ring-info">
+        <div class="ring-section-label">Next milestone</div>
+        <div class="ring-badge-row">
+          <div class="ring-badge-icon"><i class="ti ti-trophy" style="color:var(--amber);font-size:16px"></i></div>
+          <div class="ring-badge-name">Double Century</div>
+        </div>
+        <p class="ring-desc">Just 3 more hours — join the top 8% of volunteers on Weave.</p>
+        <div class="prog-track"><div class="prog-fill" id="prog"></div></div>
+        <div class="prog-labels"><span>247 hrs</span><span style="color:var(--g500);font-weight:600">250 hrs</span></div>
+        <div class="monthly">
+          <div class="ring-section-label">Monthly activity</div>
+          <div class="month-row"><span class="month-label">This month</span><div class="month-bar"><div class="month-fill" style="width:72%;background:var(--g500)"></div></div><span class="month-val">18 hrs</span></div>
+          <div class="month-row"><span class="month-label">Last month</span><div class="month-bar"><div class="month-fill" style="width:88%;background:var(--g300)"></div></div><span class="month-val">22 hrs</span></div>
+          <div class="month-row" style="margin-bottom:0"><span class="month-label">March</span><div class="month-bar"><div class="month-fill" style="width:56%;background:#95D5B2"></div></div><span class="month-val">14 hrs</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="upcoming">
+      <div class="col-label">Coming up</div>
+      <div class="event-card">
+        <div class="event-top">
+          <div><div class="event-name">Coastal Cleanup</div><div class="event-org">Heal the Bay</div></div>
+          <span class="hrs-pill">+3 hrs</span>
+        </div>
+        <div class="event-meta"><i class="ti ti-calendar-event" style="font-size:13px"></i>Sat May 10 · Santa Monica Beach</div>
+        <div class="event-meta"><i class="ti ti-users" style="font-size:13px"></i>12 spots remaining</div>
+      </div>
+      <div class="event-card">
+        <div class="event-top">
+          <div><div class="event-name">After-School Tutoring</div><div class="event-org">Community Partners LA</div></div>
+          <span class="hrs-pill">+2 hrs</span>
+        </div>
+        <div class="event-meta"><i class="ti ti-calendar-event" style="font-size:13px"></i>Tue May 13 · East LA</div>
+        <div class="event-meta"><i class="ti ti-map-pin" style="font-size:13px"></i>Garfield Community Ctr</div>
+      </div>
+      <div class="nudge-card">
+        <p>Your week looks light.</p>
+        <a href="#">Find a 3-hour opportunity →</a>
+      </div>
+      <button class="find-btn">Browse all opportunities ↗</button>
+    </div>
+  </div>
+  <div class="badges-section">
+    <div class="section-header">
+      <div class="section-title">Your badges</div>
+      <div class="section-meta">12 earned · 9 to unlock</div>
+    </div>
+    <div class="badges-row">
+      <div class="badge-tile"><div class="badge-icon" style="background:var(--amber-bg);border-color:var(--amber-border)"><i class="ti ti-medal" style="color:var(--amber)"></i></div><div class="badge-label">Half century</div></div>
+      <div class="badge-tile"><div class="badge-icon" style="background:var(--g100);border-color:#B7E4C7"><i class="ti ti-heart" style="color:var(--g700)"></i></div><div class="badge-label">Cause champion</div></div>
+      <div class="badge-tile"><div class="badge-icon" style="background:var(--coral-bg);border-color:#FDBA9A"><i class="ti ti-flame" style="color:var(--coral)"></i></div><div class="badge-label">Streak keeper</div></div>
+      <div class="badge-tile"><div class="badge-icon" style="background:var(--purple-bg);border-color:#C5C2F9"><i class="ti ti-rocket" style="color:var(--purple)"></i></div><div class="badge-label">Early adopter</div></div>
+      <div class="badge-tile"><div class="badge-icon" style="background:var(--teal-bg);border-color:#9FE1CB"><i class="ti ti-network" style="color:var(--teal)"></i></div><div class="badge-label">Connector</div></div>
+      <div class="badge-tile"><div class="badge-icon" style="background:var(--pink-bg);border-color:#F4C0D1"><i class="ti ti-seeding" style="color:var(--pink)"></i></div><div class="badge-label">First steps</div></div>
+      <div class="badge-tile"><div class="badge-icon locked"><i class="ti ti-trophy" style="color:#9B9B96"></i></div><div class="badge-label">Double century</div></div>
+      <div class="badge-tile"><div class="badge-icon locked"><i class="ti ti-star" style="color:#9B9B96"></i></div><div class="badge-label">Mentor</div></div>
+      <div class="badge-tile"><div class="badge-icon locked"><i class="ti ti-leaf" style="color:#9B9B96"></i></div><div class="badge-label">Evergreen</div></div>
+    </div>
+  </div>
+  <div class="bottom">
+    <div class="activity-section">
+      <div class="section-header">
+        <div class="section-title">Activity</div>
+        <span style="font-size:13px;color:var(--g500);font-weight:500;cursor:pointer">View all</span>
+      </div>
+      <div class="activity-item">
+        <div class="act-avatar" style="background:var(--g500);color:#fff">JR</div>
+        <div><div class="act-text">Jason R. just earned the <strong>Century</strong> badge</div><div class="act-time">2 hours ago</div></div>
+      </div>
+      <div class="activity-item">
+        <div class="act-avatar" style="background:var(--teal-bg);color:var(--teal)"><i class="ti ti-building-community"></i></div>
+        <div><div class="act-text"><strong>Food Bank LA</strong> posted a new event — Sat May 17</div><div class="act-time">You follow this org · 4 hours ago</div></div>
+      </div>
+      <div class="activity-item">
+        <div class="act-avatar" style="background:var(--amber-bg);color:var(--amber)"><i class="ti ti-heart"></i></div>
+        <div><div class="act-text">Sara K. and 22 others volunteered at <strong>Heal the Bay</strong> last Saturday</div><div class="act-time">Yesterday</div></div>
+      </div>
+      <div class="activity-item">
+        <div class="act-avatar" style="background:var(--coral-bg);color:var(--coral)"><i class="ti ti-award"></i></div>
+        <div><div class="act-text"><strong>Alhambra Youth Arts</strong> added 3 new volunteer opportunities</div><div class="act-time">2 days ago</div></div>
+      </div>
+    </div>
+    <div class="causes-section">
+      <div class="section-header" style="margin-bottom:14px">
+        <div class="section-title">Causes you follow</div>
+        <span style="font-size:13px;color:var(--g500);font-weight:500;cursor:pointer">+ Follow more</span>
+      </div>
+      <span class="cause-pill" style="background:var(--g100);color:var(--g900);border-color:#B7E4C7"><i class="ti ti-leaf" style="font-size:13px"></i>Environment</span>
+      <span class="cause-pill" style="background:var(--amber-bg);color:var(--amber-text);border-color:var(--amber-border)"><i class="ti ti-school" style="font-size:13px"></i>Education</span>
+      <span class="cause-pill" style="background:var(--teal-bg);color:#085041;border-color:#9FE1CB"><i class="ti ti-heart" style="font-size:13px"></i>Community</span>
+      <span class="cause-pill" style="background:var(--purple-bg);color:#3C3489;border-color:#C5C2F9"><i class="ti ti-paw" style="font-size:13px"></i>Animals</span>
+    </div>
+  </div>
+</div>
+<script>
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    const r=document.getElementById('ring');
+    if(r) r.style.strokeDashoffset='6';
+    const p=document.getElementById('prog');
+    if(p) p.style.width='98.8%';
+  },200);
+});
+</script>
+</body>
+</html>
